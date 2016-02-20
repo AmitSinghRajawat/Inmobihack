@@ -1,6 +1,7 @@
 from config import *
 import googlemaps
 import traceback
+from random import randint
 
 class GoogleAPI(object):
     def __init__(self):
@@ -29,6 +30,10 @@ class GoogleAPI(object):
         if not lat_long_dict:
             lat = None
             lng = None 
+        
+        if distance <=0:
+            distance = 10
+        
         else:
             lat = float(lat_long_dict['lat'])
             lng = float(lat_long_dict['lng'])
@@ -37,6 +42,20 @@ class GoogleAPI(object):
             favorite = "mess"
         
         result = self.get_nearby_location(lat, lng, favorite, distance)
+        if not lat and not lng:
+            result = result[0]
         return result
     
+    def get_fb_details(self):
+        married_status_list = ["married","single"]
+        index = randint(0,1)
+        selected_married = married_status_list[index]
+        office_lat = 12.9667
+        office_lng = 77.5667
+        likes = [{"name" : "Entertainment", "value" : 20},
+                 {"name" : "Novels", "value" : 40},
+                 {"name" : "Emeniem", "value" : 50},
+                 {"name" : "Discovey Channel", "value" : 40}]
+        return selected_married, (office_lat,office_lng), likes
+        
         
