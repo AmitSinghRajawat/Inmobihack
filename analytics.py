@@ -9,8 +9,8 @@ MIN = 0
 MAX = 100
 factor = math.pi/180.0
 
-def get_best_location(preference_list=list()):
-	fb_profile = maps.get_fb_details()
+def get_best_location(preference_list=list(),selected_married = "",office_lat = "",office_lng = "",likes = ""):
+	fb_profile = (selected_married,(office_lat,office_lng),likes)
 	preference_list = fb_profile[2]
 	preference_list.extend(config.STATUS_DICT[fb_profile[0]])
 
@@ -36,7 +36,7 @@ def get_best_location(preference_list=list()):
 	relevant_results_dict = dict()
 	relevant_results_dict['flats_list'] = flats_list
 	relevant_results_dict['nearby_locations'] = location_dict
-	print relevant_results_dict
+	return relevant_results_dict
 
 def x_y_z(location_dict):
 	for key,val in location_dict.items():

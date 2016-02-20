@@ -24,6 +24,17 @@ class GoogleAPI(object):
         
         return result['results']
         
+    def get_lat_lng(self,name):
+        dic = self.client.geocode(name)[0]['geometry']['location']
+        lat = float(dic['lat'])
+        lng = float(dic['lng'])
+        return (lat,lng)
+    
+    def get_city_name(self,lat,lng):
+        rev_geo =  self.client.reverse_geocode((lat,lng))
+        return rev_geo[0]['address_components'][-3]['long_name']
+    
+    
     def get_location_list(self, lat_long_dict = {}, favorite = "", distance = 10):
         lat = None
         lng = None
@@ -66,5 +77,4 @@ class GoogleAPI(object):
             lat_lng['lng'] = lng
         return self.get_location_list(lat_lng, favorite = "rent apartments", distance = radius)
     
-            
         
