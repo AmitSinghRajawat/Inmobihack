@@ -17,25 +17,25 @@ def get_best_location(preference_list=list(),selected_married = "",office_lat = 
 	location_dict = dict()
 	center_obj = get_center_obj(preference_list)
 	preference_list.remove(center_obj)
-	center_position = {'lat':fb_profile[1][0],'lng':fb_profile[1][1]}
+	center_position = {'lat':office_lat,'lng':office_lng}
 
 	sortedlist = sorted(preference_list, key=operator.itemgetter('value'),reverse=True)
 	for obj in sortedlist:
 		val = MAX - obj.get('value')
 		distance = get_distance(val)
-		print distance
 		raw_data = maps.get_location_list(center_position,obj['name'],distance) # expecting list format
 		location_dict[obj['name']] = refine_position(raw_data)
 		location_dict[obj['name']]['weight'] = obj.get('value')
-	print raw_data
 	location_dict,total_weight = get_radians(location_dict)
 	location_dict = x_y_z(location_dict)
 	xyz_dict = cumulative_points(location_dict,total_weight)
 	final_dict = mid_point(xyz_dict)
 	flats_list = maps.find_rented_flats(final_dict['lat'],final_dict['lng'])
 	relevant_results_dict = dict()
-	relevant_results_dict['flats_list'] = flats_list
+	relevant_results_dict['flats_list'] = list(flats_list)[:3]
 	relevant_results_dict['nearby_locations'] = location_dict
+	relevant_results_dict['office_lat'] = office_lat
+	relevant_results_dict['office_lng'] = office_lng
 	return relevant_results_dict
 
 def x_y_z(location_dict):
