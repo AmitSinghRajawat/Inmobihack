@@ -64,7 +64,7 @@ class GoogleAPI(object):
             lat_lng = {}
             lat_lng['lat'] = lat
             lat_lng['lng'] = lng
-        return get_location_list(lat_lng, favorite = "rent", distance = radius)
+        return self.get_location_list(lat_lng, favorite = "rent", distance = radius)
     
             
         
