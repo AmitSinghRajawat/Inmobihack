@@ -1,5 +1,6 @@
 from config import *
 import googlemaps
+import traceback
 
 class GoogleAPI(object):
     def __init__(self):
@@ -13,10 +14,13 @@ class GoogleAPI(object):
             lat = 12.9667
         if not lng:
             lng = 77.5667
-        location = (lat,lng)
-        result = self.client.places(key,location, radius, language=self.language)
-        print result['results']
-        print result['results'][0]['geometry']
+        try:
+            location = (lat,lng)
+            result = self.client.places(key,location, radius, language=self.language)
+        except:
+            traceback.print_exc()
+            return []
+        
         return result['results']
         
     def get_location_list(self, lat_long_dict = {}, favorite = "", distance = 10):
@@ -36,5 +40,3 @@ class GoogleAPI(object):
         return result
     
         
-obj = GoogleAPI()
-obj.get_nearby_location(12.9667, 77.5667, 'resturant')
