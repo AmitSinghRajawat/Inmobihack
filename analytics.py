@@ -27,13 +27,16 @@ def get_best_location(preference_list=list()):
 		raw_data = maps.get_location_list(center_position,obj['name'],distance) # expecting list format
 		location_dict[obj['name']] = refine_position(raw_data)
 		location_dict[obj['name']]['weight'] = obj.get('value')
-	print location_dict
+	print raw_data
 	location_dict,total_weight = get_radians(location_dict)
 	location_dict = x_y_z(location_dict)
-	location_dict = cumulative_points(location_dict,total_weight)
-	final_dict = mid_point(location_dict)
+	xyz_dict = cumulative_points(location_dict,total_weight)
+	final_dict = mid_point(xyz_dict)
 	flats_list = maps.find_rented_flats(final_dict['lat'],final_dict['lng'])
-	print flats_list
+	relevant_results_dict = dict()
+	relevant_results_dict['flats_list'] = flats_list
+	relevant_results_dict['nearby_locations'] = location_dict
+	print relevant_results_dict
 
 def x_y_z(location_dict):
 	for key,val in location_dict.items():
@@ -67,10 +70,10 @@ def mid_point(x_y_z_dict):
 	return final_result
 
 def refine_position(raw_data):
-	refine_data = list()
 	for data in raw_data[:1]:
-		refine_data = data['geometry']['location']
-	return refine_data
+		data['lat'] = data['geometry']['location']['lat']
+		data['lng'] = data['geometry']['location']['lng']
+	return data
 
 def get_radians(location_dict):
 	total_weight = 0
