@@ -1,5 +1,7 @@
 from __future__ import division
 import operator
+from googleMapAPI import api
+maps = api.GoogleAPI()
 MIN_OFFSET = 3 # kms
 MAX_OFFSET = 10 # kms
 MIN = 0
@@ -10,15 +12,15 @@ def get_best_location(preference_list=list()):
 	center_obj = get_center_obj(preference_list)
 	preference_list.append({'name':'home','value':center_obj['value']})
 	preference_list.remove(center_obj)
-	import pdb;pdb.set_trace()
-	center_obj = get_locations(dict(),center_obj['name'],0)
+	center_obj = maps.get_location_list(dict(),center_obj['name'],0)
 
 	sortedlist = sorted(preference_list, key=operator.itemgetter('value'),reverse=True)
 	for obj in preference_list:
 		val = MAX - obj.get('value')
 		distance = get_distance(val)
 		print distance
-		location_dict[obj['name']] = get_locations(center_obj,obj['name'],distance) # expecting list format
+		location_dict[obj['name']] = maps.get_location_list(center_obj,obj['name'],distance) # expecting list format
+		#cal_distance()
 	print location_dict
 	# I have got all the locations of every preference
 	
