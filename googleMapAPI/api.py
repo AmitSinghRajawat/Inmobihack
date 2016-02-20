@@ -58,4 +58,13 @@ class GoogleAPI(object):
                  {"name" : "Discovey Channel", "value" : 40}]
         return selected_married, (office_lat,office_lng), likes
         
+    def find_rented_flats(self, lat, lng, radius=10):
+        lat_lng = {}
+        if lat and lng:
+            lat_lng = {}
+            lat_lng['lat'] = lat
+            lat_lng['lng'] = lng
+        return get_location_list(lat_lng, favorite = "rent", distance = radius)
+    
+            
         
