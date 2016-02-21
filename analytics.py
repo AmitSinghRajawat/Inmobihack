@@ -9,16 +9,16 @@ MIN = 0
 MAX = 100
 factor = math.pi/180.0
 
-def get_best_location(preference_list=list(),selected_married = "",office_lat = "",office_lng = "",likes = ""):
-	fb_profile = (selected_married,(office_lat,office_lng),likes)
-	preference_list = fb_profile[2]
-	preference_list.extend(config.STATUS_DICT[fb_profile[0]])
+def get_best_location(selected_married = "",office_lat = "",office_lng = "",likes = list()):
+	if selected_married:
+		fb_profile = (selected_married,(office_lat,office_lng),likes)
+		preference_list = fb_profile[2]
+		preference_list.extend(config.STATUS_DICT[fb_profile[0]])
+	else:
+		preference_list = likes
 
-	location_dict = dict()
-	center_obj = get_center_obj(preference_list)
-	preference_list.remove(center_obj)
 	center_position = {'lat':office_lat,'lng':office_lng}
-
+	location_dict = dict()
 	sortedlist = sorted(preference_list, key=operator.itemgetter('value'),reverse=True)
 	for obj in sortedlist:
 		val = MAX - obj.get('value')
@@ -32,6 +32,7 @@ def get_best_location(preference_list=list(),selected_married = "",office_lat = 
 	final_dict = mid_point(xyz_dict)
 	flats_list = maps.find_rented_flats(final_dict['lat'],final_dict['lng'])
 	relevant_results_dict = dict()
+
 	relevant_results_dict['flats_list'] = list(flats_list)[:3]
 	relevant_results_dict['nearby_locations'] = location_dict
 	relevant_results_dict['office_lat'] = office_lat
@@ -98,4 +99,4 @@ def get_center_obj(p_obj):
 
 if __name__=='__main__':
 	preference_list = list()
-	get_best_location(preference_list)
+	get_best_location(preference_list,'single','12.0','17.0',[])

@@ -7,7 +7,7 @@ FAVORITE_KEYWORDS = {"sports" : ['sport center','cricket', 'swimming pool'],
 STATUS_DICT = {
 'single':
 			[
-				{'name':'Office','value':100},
+				{'name':'Mall','value':80},
 				{'name':'Sports','value':70},
 				{'name':'Pub','value':30}
 			],
